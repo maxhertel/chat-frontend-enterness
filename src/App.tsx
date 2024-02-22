@@ -11,6 +11,10 @@ const App: React.FC = () => {
     socket?.emit('message', value);
   };
 
+  const changeRoom = (newRoom: string) => {
+    socket?.emit('changeRoom', newRoom); // Envia uma mensagem para o servidor informando a mudança de sala
+  };
+
   useEffect(() => {
     const newSocket = io('http://localhost:8001');
     setSocket(newSocket);
@@ -32,9 +36,23 @@ const App: React.FC = () => {
     };
   }, [socket]);
 
+  useEffect(() => {
+    // Recebe a mensagem quando o usuário entra em uma nova sala
+    const roomChangedListener = (room: string) => {
+      setMessages([]); // Limpa as mensagens ao mudar de sala
+    };
+
+    socket?.on('roomChanged', roomChangedListener);
+
+    return () => {
+      socket?.off('roomChanged', roomChangedListener);
+    };
+  }, [socket]);
+
   return (
     <div className="app">
-      <MessagesInput send={send} />
+
+      <MessagesInput send={send} changeRoom={changeRoom} /> {/* Passa a função changeRoom para o MessagesInput */}
       <Messages messages={messages} />
     </div>
   );
