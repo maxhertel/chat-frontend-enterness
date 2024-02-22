@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+//TODO:migrar de arquivo, para ter a interface separada
 interface MessagesInputProps {
   send: (value: string) => void;
   changeRoom: (room: string) => void; // Função para mudar de sala
@@ -21,7 +22,6 @@ const MessagesInput: React.FC<MessagesInputProps> = ({ send, changeRoom }) => {
 
   return (
     <>
-      {/* Adiciona um seletor de sala */}
       <select value={room} onChange={(e) => handleRoomChange(e.target.value)}>
         <option value="Nest.js">Nest.js</option>
         <option value="React">React</option>
